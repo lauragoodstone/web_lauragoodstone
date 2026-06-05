@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laura Goodstone Image Gallery</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #0b0b0b;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.86);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding: 18px 28px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .info {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    main {
+      padding: 28px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: #151515;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+
+    .card img {
+      width: 100%;
+      height: 360px;
+      object-fit: contain;
+      display: block;
+      background: #000;
+    }
+
+    .caption {
+      padding: 12px 14px 14px;
+      font-size: 13px;
+      color: #ddd;
+      word-break: break-all;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .caption a {
+      color: #f5c542;
+      text-decoration: none;
+    }
+
+    .caption a:hover {
+      text-decoration: underline;
+    }
+
+    .loading,
+    .error {
+      font-size: 16px;
+      color: #ccc;
+      padding: 30px 0;
+    }
+
+    @media (max-width: 700px) {
+      main {
+        padding: 16px;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .card img {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Laura Goodstone Image Gallery</h1>
+    <div class="info" id="info">Loading images...</div>
+  </header>
+
+  <main>
+    <div id="status" class="loading">Searching .webp images in repository...</div>
+    <div class="gallery" id="gallery"></div>
+  </main>
+
+  <script>
+    const owner = "lauragoodstone";
+    const repo = "web_lauragoodstone";
+    const branch = "main";
+
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
+    const siteBase = `https://${owner}.github.io/${repo}/`;
+
+    const gallery = document.getElementById("gallery");
+    const status = document.getElementById("status");
+    const info = document.getElementById("info");
+
+    async function loadImages() {
+      try {
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+          throw new Error("Could not read repository. Check if the repo is public and if the branch is main.");
+        }
+
+        const data = await response.json();
+
+        const images = data.tree
+          .filter(item => item.type === "blob")
+          .filter(item => item.path.toLowerCase().endsWith(".webp"))
+          .sort((a, b) => a.path.localeCompare(b.path));
+
+        status.style.display = "none";
+        info.textContent = `${images.length} WEBP images found`;
+
+        if (!images.length) {
+          status.style.display = "block";
+          status.textContent = "No .webp images found.";
+          return;
+        }
+
+        images.forEach(item => {
+          const imageUrl = siteBase + item.path;
+
+          const card = document.createElement("div");
+          card.className = "card";
+
+          card.innerHTML = `
+            <a href="${imageUrl}" target="_blank">
+              <img src="${imageUrl}" loading="lazy" alt="${item.path}">
+            </a>
+            <div class="caption">
+              <a href="${imageUrl}" target="_blank">${item.path}</a>
+            </div>
+          `;
+
+          gallery.appendChild(card);
+        });
+
+      } catch (error) {
+        status.className = "error";
+        status.textContent = error.message;
+        info.textContent = "Error loading images";
+      }
+    }
+
+    loadImages();
+  </script>
+</body>
+</html>
