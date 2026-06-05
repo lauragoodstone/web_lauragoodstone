@@ -64,23 +64,23 @@
       object-fit: contain;
       display: block;
       background: #000;
+      cursor: pointer;
     }
 
     .caption {
-      padding: 12px 14px 14px;
-      font-size: 13px;
-      color: #ddd;
-      word-break: break-all;
+      padding: 16px 14px 18px;
+      font-size: 17px;
+      line-height: 1.35;
+      color: #f1f1f1;
+      word-break: break-word;
+      text-align: center;
       border-top: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      user-select: all;
     }
 
-    .caption a {
+    .caption:hover {
       color: #f5c542;
-      text-decoration: none;
-    }
-
-    .caption a:hover {
-      text-decoration: underline;
     }
 
     .loading,
@@ -88,6 +88,29 @@
       font-size: 16px;
       color: #ccc;
       padding: 30px 0;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 26px;
+      transform: translateX(-50%);
+      background: rgba(245, 197, 66, 0.96);
+      color: #111;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-6px);
     }
 
     @media (max-width: 700px) {
@@ -102,6 +125,10 @@
 
       .card img {
         height: 300px;
+      }
+
+      .caption {
+        font-size: 16px;
       }
     }
   </style>
@@ -118,6 +145,8 @@
     <div class="gallery" id="gallery"></div>
   </main>
 
+  <div class="toast" id="toast">Copied image name</div>
+
   <script>
     const owner = "lauragoodstone";
     const repo = "web_lauragoodstone";
@@ -129,6 +158,35 @@
     const gallery = document.getElementById("gallery");
     const status = document.getElementById("status");
     const info = document.getElementById("info");
+    const toast = document.getElementById("toast");
+
+    let toastTimer = null;
+
+    function showToast(text) {
+      toast.textContent = text;
+      toast.classList.add("show");
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1400);
+    }
+
+    async function copyImageName(imageName) {
+      try {
+        await navigator.clipboard.writeText(imageName);
+        showToast(`Copied: ${imageName}`);
+      } catch (error) {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = imageName;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+
+        showToast(`Copied: ${imageName}`);
+      }
+    }
 
     async function loadImages() {
       try {
@@ -146,7 +204,7 @@
           .sort((a, b) => a.path.localeCompare(b.path));
 
         status.style.display = "none";
-        info.textContent = `${images.length} WEBP images found`;
+        info.textContent = `${images.length} WEBP images found — click image or name to copy`;
 
         if (!images.length) {
           status.style.display = "block";
@@ -156,19 +214,27 @@
 
         images.forEach(item => {
           const imageUrl = siteBase + item.path;
+          const imageName = item.path;
 
           const card = document.createElement("div");
           card.className = "card";
 
-          card.innerHTML = `
-            <a href="${imageUrl}" target="_blank">
-              <img src="${imageUrl}" loading="lazy" alt="${item.path}">
-            </a>
-            <div class="caption">
-              <a href="${imageUrl}" target="_blank">${item.path}</a>
-            </div>
-          `;
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.loading = "lazy";
+          img.alt = imageName;
+          img.title = "Click to copy image name";
 
+          const caption = document.createElement("div");
+          caption.className = "caption";
+          caption.textContent = imageName;
+          caption.title = "Click to copy image name";
+
+          img.addEventListener("click", () => copyImageName(imageName));
+          caption.addEventListener("click", () => copyImageName(imageName));
+
+          card.appendChild(img);
+          card.appendChild(caption);
           gallery.appendChild(card);
         });
 
