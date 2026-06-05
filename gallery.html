@@ -40,6 +40,38 @@
       color: #aaa;
     }
 
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .filter-btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      padding: 9px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: rgba(245, 197, 66, 0.16);
+      border-color: rgba(245, 197, 66, 0.5);
+    }
+
+    .filter-btn.active {
+      background: #f5c542;
+      color: #111;
+      border-color: #f5c542;
+    }
+
     main {
       padding: 28px;
     }
@@ -114,6 +146,10 @@
     }
 
     @media (max-width: 700px) {
+      header {
+        padding: 16px;
+      }
+
       main {
         padding: 16px;
       }
@@ -138,6 +174,12 @@
   <header>
     <h1>Laura Goodstone Image Gallery</h1>
     <div class="info" id="info">Loading images...</div>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="w">Web 19:9</button>
+      <button class="filter-btn" data-filter="p">Phone 4:4</button>
+    </div>
   </header>
 
   <main>
@@ -159,8 +201,39 @@
     const status = document.getElementById("status");
     const info = document.getElementById("info");
     const toast = document.getElementById("toast");
+    const filterButtons = document.querySelectorAll(".filter-btn");
 
     let toastTimer = null;
+    let allImages = [];
+    let currentFilter = "all";
+
+    function getFileName(path) {
+      return path.split("/").pop().toLowerCase();
+    }
+
+    function getImageType(path) {
+      const fileName = getFileName(path);
+
+      if (fileName.startsWith("w")) return "w";
+      if (fileName.startsWith("p")) return "p";
+
+      return "other";
+    }
+
+    function getFilterLabel(filter) {
+      if (filter === "w") return "Web 19:9";
+      if (filter === "p") return "Phone 4:4";
+      return "All";
+    }
+
+    function updateInfo(visibleCount) {
+      const total = allImages.length;
+      const webCount = allImages.filter(item => getImageType(item.path) === "w").length;
+      const phoneCount = allImages.filter(item => getImageType(item.path) === "p").length;
+      const label = getFilterLabel(currentFilter);
+
+      info.textContent = `${visibleCount} showing / ${total} total — Web: ${webCount} — Phone: ${phoneCount} — Filter: ${label} — click image or name to copy`;
+    }
 
     function showToast(text) {
       toast.textContent = text;
@@ -188,6 +261,68 @@
       }
     }
 
+    function renderGallery() {
+      gallery.innerHTML = "";
+
+      const visibleImages = allImages.filter(item => {
+        if (currentFilter === "all") return true;
+        return getImageType(item.path) === currentFilter;
+      });
+
+      updateInfo(visibleImages.length);
+
+      if (!visibleImages.length) {
+        status.style.display = "block";
+        status.className = "loading";
+        status.textContent = `No images found for filter: ${getFilterLabel(currentFilter)}.`;
+        return;
+      }
+
+      status.style.display = "none";
+
+      visibleImages.forEach(item => {
+        const imageUrl = siteBase + item.path;
+        const imageName = item.path;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const img = document.createElement("img");
+        img.src = imageUrl;
+        img.loading = "lazy";
+        img.alt = imageName;
+        img.title = "Click to copy image name";
+
+        const caption = document.createElement("div");
+        caption.className = "caption";
+        caption.textContent = imageName;
+        caption.title = "Click to copy image name";
+
+        img.addEventListener("click", () => copyImageName(imageName));
+        caption.addEventListener("click", () => copyImageName(imageName));
+
+        card.appendChild(img);
+        card.appendChild(caption);
+        gallery.appendChild(card);
+      });
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+
+      filterButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.filter === filter);
+      });
+
+      renderGallery();
+    }
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        setFilter(button.dataset.filter);
+      });
+    });
+
     async function loadImages() {
       try {
         const response = await fetch(apiUrl);
@@ -198,45 +333,19 @@
 
         const data = await response.json();
 
-        const images = data.tree
+        allImages = data.tree
           .filter(item => item.type === "blob")
           .filter(item => item.path.toLowerCase().endsWith(".webp"))
-          .sort((a, b) => a.path.localeCompare(b.path));
+          .sort((a, b) => a.path.localeCompare(b.path, undefined, { numeric: true }));
 
-        status.style.display = "none";
-        info.textContent = `${images.length} WEBP images found — click image or name to copy`;
-
-        if (!images.length) {
+        if (!allImages.length) {
           status.style.display = "block";
           status.textContent = "No .webp images found.";
+          info.textContent = "No images found";
           return;
         }
 
-        images.forEach(item => {
-          const imageUrl = siteBase + item.path;
-          const imageName = item.path;
-
-          const card = document.createElement("div");
-          card.className = "card";
-
-          const img = document.createElement("img");
-          img.src = imageUrl;
-          img.loading = "lazy";
-          img.alt = imageName;
-          img.title = "Click to copy image name";
-
-          const caption = document.createElement("div");
-          caption.className = "caption";
-          caption.textContent = imageName;
-          caption.title = "Click to copy image name";
-
-          img.addEventListener("click", () => copyImageName(imageName));
-          caption.addEventListener("click", () => copyImageName(imageName));
-
-          card.appendChild(img);
-          card.appendChild(caption);
-          gallery.appendChild(card);
-        });
+        renderGallery();
 
       } catch (error) {
         status.className = "error";
