@@ -47,7 +47,8 @@
       margin-top: 14px;
     }
 
-    .filter-btn {
+    .filter-btn,
+    .small-btn {
       appearance: none;
       border: 1px solid rgba(255,255,255,0.18);
       background: rgba(255,255,255,0.06);
@@ -61,7 +62,8 @@
       transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     }
 
-    .filter-btn:hover {
+    .filter-btn:hover,
+    .small-btn:hover {
       background: rgba(245, 197, 66, 0.16);
       border-color: rgba(245, 197, 66, 0.5);
     }
@@ -76,6 +78,94 @@
       padding: 28px;
     }
 
+    .favorites-panel {
+      background: #111;
+      border: 1px solid rgba(245, 197, 66, 0.28);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 28px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+    }
+
+    .favorites-panel h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      color: #f5c542;
+    }
+
+    .favorites-help {
+      margin: 0 0 14px;
+      color: #aaa;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .favorites-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .favorites-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .favorite-item {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+      align-items: center;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .favorite-url {
+      color: #f1f1f1;
+      font-size: 13px;
+      word-break: break-all;
+      user-select: all;
+      cursor: pointer;
+    }
+
+    .favorite-url:hover {
+      color: #f5c542;
+    }
+
+    .favorite-empty {
+      color: #888;
+      font-size: 14px;
+      padding: 10px 0;
+    }
+
+    .favorite-import {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .favorite-import textarea {
+      width: 100%;
+      min-height: 90px;
+      resize: vertical;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: #080808;
+      color: #fff;
+      padding: 12px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .favorite-import textarea:focus {
+      border-color: rgba(245, 197, 66, 0.55);
+    }
+
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -83,11 +173,40 @@
     }
 
     .card {
+      position: relative;
       background: #151515;
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+
+    .favorite-toggle {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 5;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(0,0,0,0.72);
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .favorite-toggle:hover {
+      transform: scale(1.06);
+      background: rgba(245, 197, 66, 0.22);
+    }
+
+    .favorite-toggle.active {
+      background: #f5c542;
+      color: #111;
+      border-color: #f5c542;
     }
 
     .card img {
@@ -138,6 +257,10 @@
       pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease;
       z-index: 999;
+      max-width: calc(100vw - 32px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .toast.show {
@@ -166,6 +289,14 @@
       .caption {
         font-size: 16px;
       }
+
+      .favorite-item {
+        grid-template-columns: 1fr;
+      }
+
+      .small-btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -183,11 +314,31 @@
   </header>
 
   <main>
+    <section class="favorites-panel">
+      <h2>Favorite Images</h2>
+      <p class="favorites-help">
+        Click the star on any image to save it here. Favorites stay saved in this browser.
+        You can copy one favorite, copy all favorites, or paste/import a list of favorites.
+      </p>
+
+      <div class="favorites-actions">
+        <button class="small-btn" id="copyAllFavoritesBtn">Copy All Favorites</button>
+        <button class="small-btn" id="clearFavoritesBtn">Clear Favorites</button>
+      </div>
+
+      <div class="favorites-list" id="favoritesList"></div>
+
+      <div class="favorite-import">
+        <textarea id="favoritesInput" placeholder="Paste favorite URLs here, one per line. Example: https://lauragoodstone.com/w_01.webp"></textarea>
+        <button class="small-btn" id="importFavoritesBtn">Import / Paste Favorites</button>
+      </div>
+    </section>
+
     <div id="status" class="loading">Searching .webp images in repository...</div>
     <div class="gallery" id="gallery"></div>
   </main>
 
-  <div class="toast" id="toast">Copied image name</div>
+  <div class="toast" id="toast">Copied image URL</div>
 
   <script>
     const owner = "lauragoodstone";
@@ -195,7 +346,20 @@
     const branch = "main";
 
     const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
+
+    /*
+      This URL is used to display the image inside this gallery.
+    */
     const siteBase = `https://${owner}.github.io/${repo}/`;
+
+    /*
+      This URL is what gets copied and saved as favorite.
+      Example:
+      https://lauragoodstone.com/w_01.webp
+    */
+    const publicBase = "https://lauragoodstone.com/";
+
+    const favoritesStorageKey = "lauraGoodstoneFavoriteImages";
 
     const gallery = document.getElementById("gallery");
     const status = document.getElementById("status");
@@ -203,9 +367,16 @@
     const toast = document.getElementById("toast");
     const filterButtons = document.querySelectorAll(".filter-btn");
 
+    const favoritesList = document.getElementById("favoritesList");
+    const favoritesInput = document.getElementById("favoritesInput");
+    const copyAllFavoritesBtn = document.getElementById("copyAllFavoritesBtn");
+    const clearFavoritesBtn = document.getElementById("clearFavoritesBtn");
+    const importFavoritesBtn = document.getElementById("importFavoritesBtn");
+
     let toastTimer = null;
     let allImages = [];
     let currentFilter = "all";
+    let favorites = loadFavorites();
 
     function getFileName(path) {
       return path.split("/").pop().toLowerCase();
@@ -226,13 +397,51 @@
       return "All";
     }
 
+    function normalizeUrl(value) {
+      return value.trim();
+    }
+
+    function pathToPublicUrl(path) {
+      return publicBase + path;
+    }
+
+    function publicUrlToPath(url) {
+      return url.replace(publicBase, "");
+    }
+
+    function loadFavorites() {
+      try {
+        const saved = localStorage.getItem(favoritesStorageKey);
+        if (!saved) return [];
+
+        const parsed = JSON.parse(saved);
+
+        if (!Array.isArray(parsed)) return [];
+
+        return parsed
+          .map(item => String(item).trim())
+          .filter(Boolean);
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveFavorites() {
+      localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
+    }
+
+    function isFavorite(url) {
+      return favorites.includes(url);
+    }
+
     function updateInfo(visibleCount) {
       const total = allImages.length;
       const webCount = allImages.filter(item => getImageType(item.path) === "w").length;
       const phoneCount = allImages.filter(item => getImageType(item.path) === "p").length;
       const label = getFilterLabel(currentFilter);
+      const favoriteCount = favorites.length;
 
-      info.textContent = `${visibleCount} showing / ${total} total — Web: ${webCount} — Phone: ${phoneCount} — Filter: ${label} — click image or name to copy`;
+      info.textContent = `${visibleCount} showing / ${total} total — Web: ${webCount} — Phone: ${phoneCount} — Favorites: ${favoriteCount} — Filter: ${label} — click image or name to copy full URL`;
     }
 
     function showToast(text) {
@@ -245,20 +454,100 @@
       }, 1400);
     }
 
-    async function copyImageName(imageName) {
+    async function copyText(text) {
       try {
-        await navigator.clipboard.writeText(imageName);
-        showToast(`Copied: ${imageName}`);
+        await navigator.clipboard.writeText(text);
+        showToast(`Copied: ${text}`);
       } catch (error) {
         const tempInput = document.createElement("textarea");
-        tempInput.value = imageName;
+        tempInput.value = text;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand("copy");
         document.body.removeChild(tempInput);
 
-        showToast(`Copied: ${imageName}`);
+        showToast(`Copied: ${text}`);
       }
+    }
+
+    function addFavorite(url) {
+      const cleanUrl = normalizeUrl(url);
+
+      if (!cleanUrl) return;
+
+      if (!favorites.includes(cleanUrl)) {
+        favorites.push(cleanUrl);
+        saveFavorites();
+      }
+    }
+
+    function removeFavorite(url) {
+      favorites = favorites.filter(item => item !== url);
+      saveFavorites();
+    }
+
+    function toggleFavorite(url) {
+      if (isFavorite(url)) {
+        removeFavorite(url);
+        showToast("Removed from favorites");
+      } else {
+        addFavorite(url);
+        showToast("Added to favorites");
+      }
+
+      renderFavorites();
+      renderGallery();
+    }
+
+    function renderFavorites() {
+      favoritesList.innerHTML = "";
+
+      updateInfo(
+        allImages.filter(item => {
+          if (currentFilter === "all") return true;
+          return getImageType(item.path) === currentFilter;
+        }).length
+      );
+
+      if (!favorites.length) {
+        const empty = document.createElement("div");
+        empty.className = "favorite-empty";
+        empty.textContent = "No favorite images yet.";
+        favoritesList.appendChild(empty);
+        return;
+      }
+
+      favorites.forEach(url => {
+        const item = document.createElement("div");
+        item.className = "favorite-item";
+
+        const urlText = document.createElement("div");
+        urlText.className = "favorite-url";
+        urlText.textContent = url;
+        urlText.title = "Click to copy";
+        urlText.addEventListener("click", () => copyText(url));
+
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "small-btn";
+        copyBtn.textContent = "Copy";
+        copyBtn.addEventListener("click", () => copyText(url));
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "small-btn";
+        removeBtn.textContent = "Remove";
+        removeBtn.addEventListener("click", () => {
+          removeFavorite(url);
+          renderFavorites();
+          renderGallery();
+          showToast("Favorite removed");
+        });
+
+        item.appendChild(urlText);
+        item.appendChild(copyBtn);
+        item.appendChild(removeBtn);
+
+        favoritesList.appendChild(item);
+      });
     }
 
     function renderGallery() {
@@ -282,25 +571,36 @@
 
       visibleImages.forEach(item => {
         const imageUrl = siteBase + item.path;
-        const imageName = item.path;
+        const imageCopyUrl = pathToPublicUrl(item.path);
 
         const card = document.createElement("div");
         card.className = "card";
 
+        const favoriteBtn = document.createElement("button");
+        favoriteBtn.className = "favorite-toggle";
+        favoriteBtn.innerHTML = "★";
+        favoriteBtn.title = "Add / remove favorite";
+        favoriteBtn.classList.toggle("active", isFavorite(imageCopyUrl));
+        favoriteBtn.addEventListener("click", event => {
+          event.stopPropagation();
+          toggleFavorite(imageCopyUrl);
+        });
+
         const img = document.createElement("img");
         img.src = imageUrl;
         img.loading = "lazy";
-        img.alt = imageName;
-        img.title = "Click to copy image name";
+        img.alt = imageCopyUrl;
+        img.title = "Click to copy full image URL";
 
         const caption = document.createElement("div");
         caption.className = "caption";
-        caption.textContent = imageName;
-        caption.title = "Click to copy image name";
+        caption.textContent = imageCopyUrl;
+        caption.title = "Click to copy full image URL";
 
-        img.addEventListener("click", () => copyImageName(imageName));
-        caption.addEventListener("click", () => copyImageName(imageName));
+        img.addEventListener("click", () => copyText(imageCopyUrl));
+        caption.addEventListener("click", () => copyText(imageCopyUrl));
 
+        card.appendChild(favoriteBtn);
         card.appendChild(img);
         card.appendChild(caption);
         gallery.appendChild(card);
@@ -315,12 +615,60 @@
       });
 
       renderGallery();
+      renderFavorites();
     }
 
     filterButtons.forEach(button => {
       button.addEventListener("click", () => {
         setFilter(button.dataset.filter);
       });
+    });
+
+    copyAllFavoritesBtn.addEventListener("click", () => {
+      if (!favorites.length) {
+        showToast("No favorites to copy");
+        return;
+      }
+
+      copyText(favorites.join("\n"));
+    });
+
+    clearFavoritesBtn.addEventListener("click", () => {
+      favorites = [];
+      saveFavorites();
+      renderFavorites();
+      renderGallery();
+      showToast("Favorites cleared");
+    });
+
+    importFavoritesBtn.addEventListener("click", () => {
+      const pastedText = favoritesInput.value.trim();
+
+      if (!pastedText) {
+        showToast("Paste at least one favorite URL");
+        return;
+      }
+
+      const importedFavorites = pastedText
+        .split(/\n|,|\s+/)
+        .map(item => item.trim())
+        .filter(Boolean)
+        .filter(item => item.startsWith(publicBase))
+        .filter(item => item.toLowerCase().endsWith(".webp"));
+
+      if (!importedFavorites.length) {
+        showToast("No valid .webp URLs found");
+        return;
+      }
+
+      importedFavorites.forEach(url => addFavorite(url));
+
+      favoritesInput.value = "";
+      saveFavorites();
+      renderFavorites();
+      renderGallery();
+
+      showToast(`${importedFavorites.length} favorite(s) imported`);
     });
 
     async function loadImages() {
@@ -342,15 +690,18 @@
           status.style.display = "block";
           status.textContent = "No .webp images found.";
           info.textContent = "No images found";
+          renderFavorites();
           return;
         }
 
         renderGallery();
+        renderFavorites();
 
       } catch (error) {
         status.className = "error";
         status.textContent = error.message;
         info.textContent = "Error loading images";
+        renderFavorites();
       }
     }
 
