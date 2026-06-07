@@ -179,6 +179,17 @@
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      transition: opacity 0.25s ease, filter 0.25s ease, transform 0.25s ease;
+    }
+
+    .card.dimmed-non-favorite {
+      opacity: 0.22;
+      filter: grayscale(1);
+    }
+
+    .card.dimmed-non-favorite:hover {
+      opacity: 0.75;
+      filter: grayscale(0.35);
     }
 
     .favorite-toggle {
@@ -310,6 +321,7 @@
       <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="w">Web 19:9</button>
       <button class="filter-btn" data-filter="p">Phone 4:4</button>
+      <button class="filter-btn" id="dimNonFavoritesBtn">Dim Non-Favorites</button>
     </div>
   </header>
 
@@ -372,11 +384,13 @@
     const copyAllFavoritesBtn = document.getElementById("copyAllFavoritesBtn");
     const clearFavoritesBtn = document.getElementById("clearFavoritesBtn");
     const importFavoritesBtn = document.getElementById("importFavoritesBtn");
+    const dimNonFavoritesBtn = document.getElementById("dimNonFavoritesBtn");
 
     let toastTimer = null;
     let allImages = [];
     let currentFilter = "all";
     let favorites = loadFavorites();
+    let dimNonFavorites = false;
 
     function getFileName(path) {
       return path.split("/").pop().toLowerCase();
@@ -405,10 +419,6 @@
       return publicBase + path;
     }
 
-    function publicUrlToPath(url) {
-      return url.replace(publicBase, "");
-    }
-
     function loadFavorites() {
       try {
         const saved = localStorage.getItem(favoritesStorageKey);
@@ -434,14 +444,22 @@
       return favorites.includes(url);
     }
 
+    function getVisibleImages() {
+      return allImages.filter(item => {
+        if (currentFilter === "all") return true;
+        return getImageType(item.path) === currentFilter;
+      });
+    }
+
     function updateInfo(visibleCount) {
       const total = allImages.length;
       const webCount = allImages.filter(item => getImageType(item.path) === "w").length;
       const phoneCount = allImages.filter(item => getImageType(item.path) === "p").length;
       const label = getFilterLabel(currentFilter);
       const favoriteCount = favorites.length;
+      const dimStatus = dimNonFavorites ? "Dim: ON" : "Dim: OFF";
 
-      info.textContent = `${visibleCount} showing / ${total} total — Web: ${webCount} — Phone: ${phoneCount} — Favorites: ${favoriteCount} — Filter: ${label} — click image or name to copy full URL`;
+      info.textContent = `${visibleCount} showing / ${total} total — Web: ${webCount} — Phone: ${phoneCount} — Favorites: ${favoriteCount} — Filter: ${label} — ${dimStatus} — click image or name to copy full URL`;
     }
 
     function showToast(text) {
@@ -502,12 +520,7 @@
     function renderFavorites() {
       favoritesList.innerHTML = "";
 
-      updateInfo(
-        allImages.filter(item => {
-          if (currentFilter === "all") return true;
-          return getImageType(item.path) === currentFilter;
-        }).length
-      );
+      updateInfo(getVisibleImages().length);
 
       if (!favorites.length) {
         const empty = document.createElement("div");
@@ -553,10 +566,7 @@
     function renderGallery() {
       gallery.innerHTML = "";
 
-      const visibleImages = allImages.filter(item => {
-        if (currentFilter === "all") return true;
-        return getImageType(item.path) === currentFilter;
-      });
+      const visibleImages = getVisibleImages();
 
       updateInfo(visibleImages.length);
 
@@ -575,6 +585,10 @@
 
         const card = document.createElement("div");
         card.className = "card";
+
+        if (dimNonFavorites && !isFavorite(imageCopyUrl)) {
+          card.classList.add("dimmed-non-favorite");
+        }
 
         const favoriteBtn = document.createElement("button");
         favoriteBtn.className = "favorite-toggle";
@@ -611,7 +625,9 @@
       currentFilter = filter;
 
       filterButtons.forEach(button => {
-        button.classList.toggle("active", button.dataset.filter === filter);
+        if (button.dataset.filter) {
+          button.classList.toggle("active", button.dataset.filter === filter);
+        }
       });
 
       renderGallery();
@@ -619,9 +635,28 @@
     }
 
     filterButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        setFilter(button.dataset.filter);
-      });
+      if (button.dataset.filter) {
+        button.addEventListener("click", () => {
+          setFilter(button.dataset.filter);
+        });
+      }
+    });
+
+    dimNonFavoritesBtn.addEventListener("click", () => {
+      dimNonFavorites = !dimNonFavorites;
+
+      dimNonFavoritesBtn.classList.toggle("active", dimNonFavorites);
+
+      if (dimNonFavorites) {
+        dimNonFavoritesBtn.textContent = "Show All Normally";
+        showToast("Non-favorite images dimmed");
+      } else {
+        dimNonFavoritesBtn.textContent = "Dim Non-Favorites";
+        showToast("All images visible normally");
+      }
+
+      renderGallery();
+      renderFavorites();
     });
 
     copyAllFavoritesBtn.addEventListener("click", () => {
