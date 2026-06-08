@@ -4182,9 +4182,56 @@
     const buttons = document.querySelectorAll(".tab-button");
     const main = document.getElementById("desktopApp");
     const pagesToPreload = [
-      { id: "story", file: "story.html" },
-      { id: "contact", file: "contact.html" }
+      { id: "story", file: "story.html", aliases: ["story", "story.html"] },
+      { id: "contact", file: "contact.html", aliases: ["contact", "contact.html"] },
+
+      /*
+        Booking/Tour are embedded pages.
+        The visible section inside the loaded file must be shown with id "booking" / "tour",
+        because this is the phone version and only phone files are accepted.
+      */
+      {
+        id: "booking",
+        file: "booking_phone.html",
+        aliases: ["booking", "booking_phone", "booking_phone.html"]
+      },
+      {
+        id: "tour",
+        file: "tour_phone.html",
+        aliases: ["tour", "tour_phone", "tour_phone.html"]
+      }
     ];
+
+    function normalizePageTarget(target) {
+      const cleanTarget = String(target || "home").trim().replace(/^#/, "");
+      const cleanId = cleanTarget.replace(/\.html?$/i, "");
+      const knownPage = pagesToPreload.find(page => {
+        const aliases = page.aliases || [];
+        return page.id === cleanTarget ||
+          page.id === cleanId ||
+          page.file === cleanTarget ||
+          aliases.includes(cleanTarget) ||
+          aliases.includes(cleanId);
+      });
+
+      return knownPage ? knownPage.id : cleanId;
+    }
+
+    function findEmbeddedPage(target) {
+      const cleanTarget = String(target || "").trim().replace(/^#/, "");
+      const cleanId = cleanTarget.replace(/\.html?$/i, "");
+
+      return pagesToPreload.find(page => {
+        const aliases = page.aliases || [];
+        const alternateFiles = page.alternateFiles || [];
+        return page.id === cleanTarget ||
+          page.id === cleanId ||
+          page.file === cleanTarget ||
+          alternateFiles.includes(cleanTarget) ||
+          aliases.includes(cleanTarget) ||
+          aliases.includes(cleanId);
+      });
+    }
 
     function getSections() {
       return document.querySelectorAll(".page-section");
@@ -4202,7 +4249,7 @@
       });
 
       document.querySelectorAll(".tab-button").forEach(button => {
-        button.classList.toggle("active", button.dataset.target === targetId);
+        button.classList.toggle("active", normalizePageTarget(button.dataset.target) === targetId);
       });
 
       closeVideoModal();
@@ -4298,18 +4345,39 @@
       });
     }
 
+    function getPageFileCandidates(page) {
+      const files = [page.file].concat(page.alternateFiles || []);
+      return files.filter(Boolean).filter((file, index, list) => list.indexOf(file) === index);
+    }
+
+    async function fetchEmbeddedPageHtml(page) {
+      const files = getPageFileCandidates(page);
+      let lastError = null;
+
+      for (const file of files) {
+        try {
+          const response = await fetch(file, { cache: "force-cache" });
+          if (!response.ok) {
+            lastError = new Error("Could not load " + file);
+            continue;
+          }
+
+          return { file, htmlText: await response.text() };
+        } catch (error) {
+          lastError = error;
+        }
+      }
+
+      throw lastError || new Error("Could not load " + page.file);
+    }
+
     async function preloadPage(page) {
       if (document.getElementById(page.id)) {
         return;
       }
 
-      const response = await fetch(page.file, { cache: "force-cache" });
-
-      if (!response.ok) {
-        throw new Error("Could not load " + page.file);
-      }
-
-      const htmlText = await response.text();
+      const loadedPage = await fetchEmbeddedPageHtml(page);
+      const htmlText = loadedPage.htmlText;
       const parser = new DOMParser();
       const pageDocument = parser.parseFromString(htmlText, "text/html");
       let pageSection = pageDocument.getElementById(page.id);
@@ -4834,14 +4902,19 @@
 
       if (type === "embeddedPage") {
         const cleanTarget = target.replace(/^#/, "");
-        const pageId = cleanTarget.replace(/\.html?$/i, "");
-        const knownPage = pagesToPreload.find(page => page.id === pageId || page.file === cleanTarget);
-        const pageToLoad = knownPage || { id: pageId, file: /\.html?$/i.test(cleanTarget) ? cleanTarget : pageId + ".html" };
+        const fallbackId = cleanTarget.replace(/\.html?$/i, "");
+        const knownPage = findEmbeddedPage(cleanTarget);
+        const pageToLoad = knownPage || {
+          id: fallbackId,
+          file: /\.html?$/i.test(cleanTarget) ? cleanTarget : fallbackId + ".html",
+          aliases: [fallbackId, cleanTarget]
+        };
+        const sectionId = pageToLoad.id || fallbackId;
 
-        if (document.getElementById(pageId)) {
-          showSection(pageId);
+        if (document.getElementById(sectionId)) {
+          showSection(sectionId);
         } else {
-          preloadPage(pageToLoad).then(() => showSection(pageId)).catch(error => {
+          preloadPage(pageToLoad).then(() => showSection(sectionId)).catch(error => {
             console.warn(error);
             if (newTab) {
               window.open(pageToLoad.file, "_blank", "noopener");
@@ -5256,11 +5329,11 @@
 
   function applyLinks() {
     const links = finalPhoneEditorSettings.links || {};
-    Object.entries({ booking: links.booking || "booking.html", tour: links.tour || "tour.html" }).forEach(([key, target]) => {
+    Object.entries({ booking: links.booking || "booking_phone.html", tour: links.tour || "tour_phone.html" }).forEach(([key, target]) => {
       document.querySelectorAll(".tab-button[data-edit-link-target='" + key + "'], .tab-button[data-menu-type='embeddedPage'][data-target*='" + key + "']").forEach(button => {
         button.dataset.editLinkTarget = key;
         button.dataset.menuType = "embeddedPage";
-        button.dataset.target = target || (key + ".html");
+        button.dataset.target = target || (key + "_phone.html");
       });
     });
   }
