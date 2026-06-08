@@ -14,7 +14,7 @@
     :root {
       --paper: #efe4cc;
       --gold: #d7b56d;
-      --soft: rgba(247, 241, 230, 0.88);
+      --soft: rgba(247, 241, 230, 0.9);
       --muted: rgba(247, 241, 230, 0.68);
       --display: "Rye", serif;
       --script: "Playball", cursive;
@@ -34,6 +34,7 @@
       background: #050505;
       color: var(--paper);
       font-family: var(--body);
+      overflow: hidden;
     }
 
     body {
@@ -41,11 +42,11 @@
       background-image:
         linear-gradient(
           to bottom,
-          rgba(0, 0, 0, 0.15),
-          rgba(0, 0, 0, 0.35) 45%,
-          rgba(0, 0, 0, 0.78)
+          rgba(0, 0, 0, 0.12),
+          rgba(0, 0, 0, 0.34) 45%,
+          rgba(0, 0, 0, 0.82)
         ),
-        url("https://lauragoodstone.com/p_08.webp");
+        url("https://lauragoodstone.com/p_22.webp");
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
@@ -109,22 +110,18 @@
       text-shadow: 0 3px 16px rgba(0,0,0,0.9);
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      min-height: 52px;
-      margin-top: 26px;
-      border-radius: 999px;
-      background: var(--gold);
-      color: #20150a;
-      text-decoration: none;
+    .device-note {
+      margin-top: 22px;
+      padding: 14px 16px;
+      border-top: 1px solid rgba(215, 181, 109, 0.38);
+      border-bottom: 1px solid rgba(215, 181, 109, 0.28);
+      color: var(--paper);
       font-family: var(--display);
-      font-size: 0.78rem;
-      letter-spacing: 0.13em;
+      font-size: 0.76rem;
+      line-height: 1.6;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      box-shadow: 0 16px 36px rgba(0,0,0,0.55);
+      text-shadow: 0 3px 14px rgba(0,0,0,0.9);
     }
 
     .tagline {
@@ -149,12 +146,12 @@
       <div class="line"></div>
 
       <p>
-        The mobile experience is being crafted. For now, visit the full desktop version.
+        The mobile experience is being crafted to match the full visual and musical identity of the official website.
       </p>
 
-      <a class="btn" href="https://lauragoodstone.com/desktop">
-        Visit Desktop Site
-      </a>
+      <div class="device-note">
+        Please visit from a desktop or larger screen for the complete experience.
+      </div>
 
       <div class="tagline">
         Country Rock Grit · Southern Heart · Rocking Soul
