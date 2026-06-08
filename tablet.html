@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Laura Goodstone | iPad Experience Coming Soon</title>
+  <meta name="description" content="Laura Goodstone iPad experience is coming soon. Visit the desktop website for the full official experience." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rye&family=Playball&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #efe4cc;
+      --paper-dark: #d8c19a;
+      --text-light: #f7f1e6;
+      --text-soft: rgba(247, 241, 230, 0.92);
+      --text-muted: rgba(247, 241, 230, 0.74);
+      --accent: #d7b56d;
+      --font-display: "Rye", serif;
+      --font-script: "Playball", cursive;
+      --font-body: "Cormorant Garamond", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      background: #050505;
+      color: var(--text-light);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    .tablet-coming-soon {
+      position: relative;
+      width: 100%;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 48px;
+      background-image: url("https://lauragoodstone.com/p_22.webp");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .tablet-coming-soon::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.10), rgba(0,0,0,0.20) 48%, rgba(0,0,0,0.58)),
+        linear-gradient(to right, rgba(0,0,0,0.50), rgba(0,0,0,0.08), rgba(0,0,0,0.42));
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 720px);
+      padding-top: 28vh;
+    }
+
+    .script-line {
+      display: block;
+      margin-bottom: 14px;
+      font-family: var(--font-script);
+      font-size: clamp(3rem, 7vw, 5.2rem);
+      line-height: 1;
+      color: var(--paper-dark);
+      text-shadow:
+        0 3px 10px rgba(0,0,0,0.78),
+        0 0 22px rgba(0,0,0,0.6);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: var(--paper);
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 8.8vw, 7.6rem);
+      line-height: 0.92;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      text-shadow:
+        4px 4px 0 rgba(0, 0, 0, 0.46),
+        0 10px 30px rgba(0, 0, 0, 0.76);
+    }
+
+    .gold-divider {
+      width: 100%;
+      max-width: 520px;
+      height: 9px;
+      margin: 22px auto 26px;
+      background:
+        linear-gradient(90deg, transparent, rgba(215, 181, 109, 0.96), transparent);
+      opacity: 0.92;
+    }
+
+    .lead {
+      max-width: 620px;
+      margin: 0 auto;
+      color: var(--text-soft);
+      font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+      line-height: 1.48;
+      text-shadow:
+        0 3px 12px rgba(0,0,0,0.92),
+        0 0 26px rgba(0,0,0,0.74);
+    }
+
+    .note {
+      max-width: 580px;
+      margin: 18px auto 0;
+      color: var(--text-muted);
+      font-size: clamp(1.05rem, 2vw, 1.28rem);
+      line-height: 1.52;
+      text-shadow:
+        0 3px 12px rgba(0,0,0,0.92),
+        0 0 26px rgba(0,0,0,0.74);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      min-width: 230px;
+      padding: 0 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      transition: 0.25s ease;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.48);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #20150a;
+    }
+
+    .btn.secondary {
+      border: 1px solid rgba(215, 181, 109, 0.58);
+      color: var(--paper);
+      background: rgba(0, 0, 0, 0.38);
+      backdrop-filter: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.08);
+    }
+
+    .footer-mini {
+      margin-top: 28px;
+      color: rgba(247, 241, 230, 0.72);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-shadow: 0 3px 12px rgba(0,0,0,0.92);
+    }
+
+    @media (orientation: landscape) {
+      .tablet-coming-soon {
+        align-items: center;
+        padding: 48px 70px;
+        background-position: center center;
+      }
+
+      .content {
+        width: min(100%, 780px);
+        padding-top: 14vh;
+      }
+
+      h1 {
+        font-size: clamp(3.6rem, 7vw, 6.6rem);
+      }
+
+      .script-line {
+        font-size: clamp(2.7rem, 5.8vw, 4.8rem);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .tablet-coming-soon {
+        padding: 34px 22px;
+      }
+
+      .content {
+        width: min(100%, 430px);
+        padding-top: 38vh;
+      }
+
+      .script-line {
+        font-size: clamp(2.2rem, 12vw, 3.2rem);
+      }
+
+      h1 {
+        font-size: clamp(2.4rem, 13vw, 4rem);
+      }
+
+      .lead {
+        font-size: 1.22rem;
+      }
+
+      .actions {
+        display: grid;
+        gap: 12px;
+      }
+
+      .btn {
+        min-width: 0;
+        width: 100%;
+        min-height: 52px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="tablet-coming-soon">
+    <section class="content" aria-label="iPad experience coming soon">
+      <span class="script-line">Laura Goodstone</span>
+
+      <h1>iPad Experience Coming Soon</h1>
+
+      <div class="gold-divider"></div>
+
+      <p class="lead">
+        A dedicated iPad experience is being crafted for Laura Goodstone’s official website.
+      </p>
+
+      <p class="note">
+        For music, videos, live dates and booking information, please visit the full desktop version.
+      </p>
+
+      <div class="actions">
+        <a class="btn primary" href="https://lauragoodstone.com/desktop">
+          Visit Desktop Site
+        </a>
+
+        <a class="btn secondary" href="mailto:booking@lauragoodstone.com">
+          Contact Booking
+        </a>
+      </div>
+
+      <div class="footer-mini">
+        Country Rock Grit · Southern Heart · Rocking Soul
+      </div>
+    </section>
+  </main>
+</body>
+</html>
