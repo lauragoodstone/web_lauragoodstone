@@ -1298,6 +1298,196 @@
   }
 }
 
+
+/* ==================================================
+   FINAL PHONE FIT PATCH
+   Fixes oversized display titles and keeps hero/image blocks
+   inside the phone viewport without changing the page structure.
+================================================== */
+@media (max-width: 760px) {
+  #booking,
+  #booking #live-shows,
+  #booking #live-shows * {
+    max-width: 100% !important;
+  }
+
+  #booking,
+  #booking #live-shows.lg-shows-page {
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: clip !important;
+  }
+
+  #booking #live-shows .lg-shows-hero {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 100svh !important;
+    padding: calc(var(--menu-height, 72px) + 20px) 14px 32px !important;
+    align-items: flex-end !important;
+    overflow: hidden !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+  }
+
+  #booking #live-shows .lg-shows-hero::before {
+    background:
+      linear-gradient(to top, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.82) 34%, rgba(0,0,0,0.28) 68%, rgba(0,0,0,0.12) 100%),
+      radial-gradient(circle at top left, rgba(var(--shows-accent-rgb), 0.10), transparent 42%) !important;
+  }
+
+  #booking #live-shows .lg-shows-hero-inner,
+  #booking #live-shows .lg-final-cta-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  #booking #live-shows .lg-shows-hero h1 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 14px !important;
+    font-size: clamp(1.85rem, 10.2vw, 3.05rem) !important;
+    line-height: 0.92 !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    text-wrap: balance !important;
+  }
+
+  #booking #live-shows .lg-shows-intro h2,
+  #booking #live-shows .lg-shows-section-title h2,
+  #booking #live-shows .lg-production-header h2,
+  #booking #live-shows .lg-final-cta h2 {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(1.95rem, 10.5vw, 3.15rem) !important;
+    line-height: 0.96 !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    text-wrap: balance !important;
+  }
+
+  #booking #live-shows .lg-show-content h3 {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(1.75rem, 9.2vw, 2.75rem) !important;
+    line-height: 0.96 !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    text-wrap: balance !important;
+  }
+
+  #booking #live-shows .lg-production-card h3,
+  #booking #live-shows .lg-tribute-series h4 {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(1.35rem, 7.5vw, 2rem) !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+
+  #booking #live-shows .lg-shows-script {
+    font-size: clamp(1.22rem, 6.5vw, 1.8rem) !important;
+    line-height: 1.02 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  #booking #live-shows .lg-shows-eyebrow {
+    max-width: 100% !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.105em !important;
+    line-height: 1.3 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  #booking #live-shows .lg-shows-hero-lead,
+  #booking #live-shows .lg-shows-intro p,
+  #booking #live-shows .lg-shows-section-title p,
+  #booking #live-shows .lg-production-header p,
+  #booking #live-shows .lg-final-cta p,
+  #booking #live-shows .lg-show-description,
+  #booking #live-shows .lg-production-card p,
+  #booking #live-shows .lg-show-meta-row {
+    max-width: 100% !important;
+    font-size: 1.02rem !important;
+    line-height: 1.48 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  #booking #live-shows .lg-shows-intro,
+  #booking #live-shows .lg-shows-catalog,
+  #booking #live-shows .lg-production,
+  #booking #live-shows .lg-final-cta {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    overflow: hidden !important;
+  }
+
+  #booking #live-shows .lg-show-card,
+  #booking #live-shows .lg-show-card:nth-of-type(even),
+  #booking #live-shows .lg-show-card-full,
+  #booking #live-shows .lg-production-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #booking #live-shows .lg-show-visual {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: min(68svh, 620px) !important;
+    min-height: 430px !important;
+    overflow: hidden !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+  }
+
+  #booking #live-shows .lg-final-cta {
+    min-height: 100svh !important;
+    overflow: hidden !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #booking #live-shows .lg-shows-hero h1 {
+    font-size: clamp(1.65rem, 9.8vw, 2.55rem) !important;
+    line-height: 0.96 !important;
+  }
+
+  #booking #live-shows .lg-shows-intro h2,
+  #booking #live-shows .lg-shows-section-title h2,
+  #booking #live-shows .lg-production-header h2,
+  #booking #live-shows .lg-final-cta h2 {
+    font-size: clamp(1.75rem, 9.8vw, 2.65rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  #booking #live-shows .lg-show-content h3 {
+    font-size: clamp(1.55rem, 8.8vw, 2.35rem) !important;
+  }
+
+  #booking #live-shows .lg-show-visual {
+    height: 62svh !important;
+    min-height: 390px !important;
+  }
+}
+
 </style>
 
 <section id="booking" class="page-section lg-ecosystem-embed-page" data-embedded-page="live-shows">
