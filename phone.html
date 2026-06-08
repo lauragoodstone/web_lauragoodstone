@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Laura Goodstone | Mobile Experience Coming Soon</title>
-  <meta name="description" content="Laura Goodstone mobile experience is coming soon. Visit the desktop website for the full official experience." />
+  <title>Laura Goodstone | Coming Soon</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,14 +13,12 @@
   <style>
     :root {
       --paper: #efe4cc;
-      --paper-dark: #d8c19a;
-      --text-light: #f7f1e6;
-      --text-soft: rgba(247, 241, 230, 0.9);
-      --text-muted: rgba(247, 241, 230, 0.72);
-      --accent: #d7b56d;
-      --font-display: "Rye", serif;
-      --font-script: "Playball", cursive;
-      --font-body: "Cormorant Garamond", serif;
+      --gold: #d7b56d;
+      --soft: rgba(247, 241, 230, 0.88);
+      --muted: rgba(247, 241, 230, 0.68);
+      --display: "Rye", serif;
+      --script: "Playball", cursive;
+      --body: "Cormorant Garamond", serif;
     }
 
     * {
@@ -35,205 +32,131 @@
       width: 100%;
       min-height: 100%;
       background: #050505;
-      color: var(--text-light);
-      font-family: var(--font-body);
-      overflow-x: hidden;
+      color: var(--paper);
+      font-family: var(--body);
     }
 
-    .mobile-coming-soon {
-      position: relative;
-      width: 100%;
+    body {
       min-height: 100svh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 34px 22px;
-      background-image: url("https://lauragoodstone.com/p_22.webp");
+      background-image:
+        linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.15),
+          rgba(0, 0, 0, 0.35) 45%,
+          rgba(0, 0, 0, 0.78)
+        ),
+        url("https://lauragoodstone.com/p_08.webp");
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
-      text-align: center;
-      overflow: hidden;
     }
 
-    .mobile-coming-soon::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background:
-        linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.24) 45%, rgba(0,0,0,0.52)),
-        linear-gradient(to right, rgba(0,0,0,0.48), rgba(0,0,0,0.10), rgba(0,0,0,0.36));
+    .page {
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 32px 22px 46px;
+      text-align: center;
     }
 
     .content {
-      position: relative;
-      z-index: 2;
-      width: min(100%, 430px);
-      padding-top: 38vh;
+      width: 100%;
+      max-width: 390px;
     }
 
-    .script-line {
+    .artist {
       display: block;
-      margin-bottom: 12px;
-      font-family: var(--font-script);
-      font-size: clamp(2.2rem, 12vw, 3.2rem);
+      margin-bottom: 10px;
+      font-family: var(--script);
+      font-size: 2.9rem;
       line-height: 1;
-      color: var(--paper-dark);
-      text-shadow:
-        0 2px 8px rgba(0,0,0,0.75),
-        0 0 18px rgba(0,0,0,0.58);
+      color: var(--gold);
+      text-shadow: 0 4px 18px rgba(0,0,0,0.85);
     }
 
     h1 {
       margin-bottom: 18px;
-      color: var(--paper);
-      font-family: var(--font-display);
-      font-size: clamp(2.4rem, 13vw, 4rem);
+      font-family: var(--display);
+      font-size: clamp(2.8rem, 15vw, 4.3rem);
       line-height: 0.95;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
+      color: var(--paper);
       text-shadow:
-        3px 3px 0 rgba(0, 0, 0, 0.46),
-        0 8px 24px rgba(0, 0, 0, 0.72);
+        3px 3px 0 rgba(0,0,0,0.45),
+        0 8px 28px rgba(0,0,0,0.9);
     }
 
-    .gold-divider {
+    .line {
       width: 100%;
-      max-width: 340px;
-      height: 8px;
-      margin: 18px auto 22px;
-      background:
-        linear-gradient(90deg, transparent, rgba(215, 181, 109, 0.95), transparent);
-      opacity: 0.9;
+      height: 7px;
+      margin: 0 auto 22px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(215, 181, 109, 0.95),
+        transparent
+      );
     }
 
-    .lead {
-      max-width: 360px;
+    p {
       margin: 0 auto;
-      color: var(--text-soft);
-      font-size: 1.22rem;
-      line-height: 1.5;
-      text-shadow:
-        0 2px 10px rgba(0,0,0,0.9),
-        0 0 22px rgba(0,0,0,0.72);
-    }
-
-    .note {
       max-width: 340px;
-      margin: 16px auto 0;
-      color: var(--text-muted);
-      font-size: 1rem;
+      font-size: 1.18rem;
       line-height: 1.5;
-      text-shadow:
-        0 2px 10px rgba(0,0,0,0.9),
-        0 0 22px rgba(0,0,0,0.72);
-    }
-
-    .actions {
-      display: grid;
-      gap: 12px;
-      margin-top: 28px;
+      color: var(--soft);
+      text-shadow: 0 3px 16px rgba(0,0,0,0.9);
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
       min-height: 52px;
-      padding: 0 22px;
+      margin-top: 26px;
       border-radius: 999px;
+      background: var(--gold);
+      color: #20150a;
       text-decoration: none;
-      font-family: var(--font-display);
+      font-family: var(--display);
       font-size: 0.78rem;
       letter-spacing: 0.13em;
       text-transform: uppercase;
-      transition: 0.25s ease;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.55);
     }
 
-    .btn.primary {
-      background: var(--accent);
-      color: #20150a;
-    }
-
-    .btn.secondary {
-      border: 1px solid rgba(215, 181, 109, 0.55);
-      color: var(--paper);
-      background: rgba(0, 0, 0, 0.36);
-      backdrop-filter: none;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      filter: brightness(1.08);
-    }
-
-    .footer-mini {
-      margin-top: 24px;
-      color: rgba(247, 241, 230, 0.7);
+    .tagline {
+      margin-top: 22px;
+      color: var(--muted);
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.72rem;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.9);
-    }
-
-    @media (max-height: 720px) {
-      .content {
-        padding-top: 30vh;
-      }
-
-      h1 {
-        font-size: clamp(2.1rem, 11vw, 3.4rem);
-      }
-
-      .lead {
-        font-size: 1.08rem;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .mobile-coming-soon {
-        background-position: center center;
-      }
-
-      .content {
-        padding-top: 34vh;
-      }
+      text-shadow: 0 3px 14px rgba(0,0,0,0.9);
     }
   </style>
 </head>
 
 <body>
-  <main class="mobile-coming-soon">
-    <section class="content" aria-label="Mobile experience coming soon">
-      <span class="script-line">Laura Goodstone</span>
+  <main class="page">
+    <section class="content">
+      <span class="artist">Laura Goodstone</span>
 
-      <h1>Mobile Experience Coming Soon</h1>
+      <h1>Coming Soon</h1>
 
-      <div class="gold-divider"></div>
+      <div class="line"></div>
 
-      <p class="lead">
-        A dedicated mobile experience is being crafted for Laura Goodstone’s official website.
+      <p>
+        The mobile experience is being crafted. For now, visit the full desktop version.
       </p>
 
-      <p class="note">
-        For music, videos, live dates and booking information, please visit the full desktop version.
-      </p>
+      <a class="btn" href="https://lauragoodstone.com/desktop">
+        Visit Desktop Site
+      </a>
 
-      <div class="actions">
-        <a class="btn primary" href="https://lauragoodstone.com/desktop">
-          Visit Desktop Site
-        </a>
-
-        <a class="btn secondary" href="mailto:booking@lauragoodstone.com">
-          Contact Booking
-        </a>
-      </div>
-
-      <div class="footer-mini">
+      <div class="tagline">
         Country Rock Grit · Southern Heart · Rocking Soul
       </div>
     </section>
