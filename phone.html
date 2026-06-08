@@ -3584,6 +3584,99 @@
   }
 </style>
 
+
+
+<!-- ==================================================
+     PHONE FIXES REQUESTED 2026-06-07
+     1) right menu breathing room
+     2) full-width hero image
+     3) darker hero media cards
+     4) frameless Featured Release text over photo bottom
+     5) frameless Coming Next text over photo bottom
+================================================== -->
+<style id="lauraPhoneRequestedFixes">
+  body.phone-version .topbar .menu.phone-menu {
+    padding-left: var(--page-pad);
+    padding-right: calc(var(--page-pad) + 18px);
+  }
+
+  body.phone-version .menu-scroll-wrap::after {
+    width: 46px;
+  }
+
+  body.phone-version .hero-photo-stage {
+    width: calc(100% + (var(--page-pad) * 2));
+    margin-left: calc(var(--page-pad) * -1);
+    margin-right: calc(var(--page-pad) * -1);
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+
+  body.phone-version .poster-card {
+    background:
+      linear-gradient(135deg, rgba(52, 52, 52, 0.96), rgba(5, 5, 5, 0.98));
+    border-color: rgba(var(--edit-accent-rgb, 215, 181, 109), 0.30);
+    box-shadow:
+      0 18px 50px rgba(0,0,0,0.48),
+      inset 0 0 0 1px rgba(255,255,255,0.035);
+  }
+
+  body.phone-version .poster-card:hover,
+  body.phone-version .poster-card.media-trigger.active {
+    background:
+      linear-gradient(135deg, rgba(66, 66, 66, 0.98), rgba(0, 0, 0, 1));
+    border-color: rgba(var(--edit-accent-rgb, 215, 181, 109), 0.58);
+  }
+
+  body.phone-version .block-home-featured-release,
+  body.phone-version .block-home-coming-next {
+    min-height: 82vh;
+    align-items: flex-end;
+    padding: 50vh var(--page-pad) 30px;
+  }
+
+  body.phone-version .block-home-featured-release::before,
+  body.phone-version .block-home-coming-next::before {
+    background:
+      linear-gradient(to bottom,
+        rgba(0,0,0,0.02) 0%,
+        rgba(0,0,0,0.10) 36%,
+        rgba(0,0,0,0.74) 68%,
+        rgba(0,0,0,0.98) 100%),
+      radial-gradient(circle at 50% 18%, rgba(var(--edit-accent-rgb,215,181,109),0.10), transparent 30%);
+    opacity: 1;
+  }
+
+  body.phone-version .block-home-featured-release::after,
+  body.phone-version .block-home-coming-next::after {
+    opacity: 0.08;
+  }
+
+  body.phone-version .block-home-featured-release .photo-text,
+  body.phone-version .block-home-coming-next .photo-text {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    text-align: center;
+  }
+
+  body.phone-version .block-home-featured-release .photo-text h2,
+  body.phone-version .block-home-coming-next .photo-text h2 {
+    margin-bottom: 14px;
+  }
+
+  body.phone-version .block-home-featured-release .photo-text p,
+  body.phone-version .block-home-coming-next .photo-text p {
+    text-shadow: 0 4px 18px rgba(0,0,0,0.86);
+  }
+</style>
+
 </head>
 
 <body class="phone-version media-display-all">
