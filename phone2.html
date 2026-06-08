@@ -3896,6 +3896,148 @@
   }
 </style>
 
+
+<style id="lauraNonMediaNaturalFitFix">
+  /*
+    Ajuste final:
+    las imágenes de fondo de secciones NO Media encajan completas sin deformarse.
+    Usa contain, no 100% 100%, para evitar estiramiento horizontal o vertical.
+  */
+
+  body.phone-version .hero-photo-stage {
+    background-size: 100% 100%, contain !important;
+    background-position: center center, var(--edit-hero-image-x, 62%) center !important;
+    background-repeat: no-repeat, no-repeat !important;
+    background-color: #050505 !important;
+  }
+
+  body.phone-version .block-home-featured-release,
+  body.phone-version .block-home-coming-next {
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-color: #050505 !important;
+  }
+
+  body.phone-version .block-home-featured-release {
+    background-position: var(--edit-featured-image-x, 50%) center !important;
+  }
+
+  body.phone-version .block-home-coming-next {
+    background-position: var(--edit-coming-image-x, 50%) center !important;
+  }
+
+  body.phone-version .block-home-identity::before,
+  body.phone-version .block-home-sound::before {
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: var(--texture-position, center center) !important;
+  }
+</style>
+
+
+<style id="lauraNonMediaWidthNaturalFitFix">
+  /*
+    Ajuste correcto para secciones NO Media:
+    imagen al ancho completo, altura proporcional automática.
+    No se estira, no se deforma.
+  */
+
+  body.phone-version .hero-photo-stage {
+    background-size: 100% 100%, 100% auto !important;
+    background-position: center center, var(--edit-hero-image-x, 62%) center !important;
+    background-repeat: no-repeat, no-repeat !important;
+    background-color: #050505 !important;
+  }
+
+  body.phone-version .block-home-featured-release,
+  body.phone-version .block-home-coming-next {
+    background-size: 100% auto !important;
+    background-repeat: no-repeat !important;
+    background-color: #050505 !important;
+  }
+
+  body.phone-version .block-home-featured-release {
+    background-position: var(--edit-featured-image-x, 50%) center !important;
+  }
+
+  body.phone-version .block-home-coming-next {
+    background-position: var(--edit-coming-image-x, 50%) center !important;
+  }
+
+  body.phone-version .block-home-identity::before,
+  body.phone-version .block-home-sound::before {
+    inset: 0 !important;
+    background-size: 100% auto !important;
+    background-repeat: no-repeat !important;
+    background-position: var(--texture-position, center center) !important;
+  }
+
+  body.phone-version .block-home-featured-release::before,
+  body.phone-version .block-home-coming-next::before {
+    background:
+      linear-gradient(to bottom,
+        rgba(0,0,0,0.00) 0%,
+        rgba(0,0,0,0.08) 32%,
+        rgba(0,0,0,0.44) 60%,
+        rgba(0,0,0,0.86) 82%,
+        rgba(0,0,0,1) 100%),
+      radial-gradient(circle at 50% 18%, rgba(var(--edit-accent-rgb,215,181,109),0.10), transparent 30%) !important;
+    opacity: 1 !important;
+  }
+
+  body.phone-version .hero-photo-stage::before {
+    background:
+      radial-gradient(circle at 66% 26%, rgba(255, 231, 181, 0.14), transparent 26%),
+      linear-gradient(to bottom,
+        rgba(0,0,0,0.02) 0%,
+        rgba(0,0,0,0.08) 34%,
+        rgba(0,0,0,0.42) 66%,
+        rgba(0,0,0,0.96) 100%) !important;
+  }
+</style>
+
+
+<style id="lauraIdentitySoundHeroLikeImageFix">
+  /*
+    Artist Identity y The Sound son diferentes al Hero porque sus imágenes
+    estaban puestas como textura animada en ::before, con inset negativo,
+    scale/drift, blend y opacidad. Eso hacía que nunca encajaran igual.
+    Este bloque las trata como imagen de fondo estable, igual criterio visual
+    que el Hero: ancho completo, proporción natural, sin deformación ni drift.
+  */
+
+  body.phone-version .block-home-identity::before,
+  body.phone-version .block-home-sound::before {
+    inset: 0 !important;
+    transform: none !important;
+    animation: none !important;
+    background-image: var(--texture-image) !important;
+    background-size: 100% auto !important;
+    background-repeat: no-repeat !important;
+    background-position: var(--texture-position, center center) !important;
+    opacity: var(--texture-opacity, 0.5) !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+  }
+
+  body.phone-version .block-home-identity::after,
+  body.phone-version .block-home-sound::after {
+    background:
+      linear-gradient(to bottom,
+        rgba(0,0,0,0.00) 0%,
+        rgba(0,0,0,0.08) 30%,
+        rgba(0,0,0,0.38) 62%,
+        rgba(0,0,0,0.82) 86%,
+        rgba(0,0,0,1) 100%),
+      linear-gradient(90deg, rgba(0,0,0,0.42), rgba(0,0,0,0.10) 50%, rgba(0,0,0,0.34)) !important;
+  }
+
+  body.phone-version .block-home-identity,
+  body.phone-version .block-home-sound {
+    background-color: #050505 !important;
+  }
+</style>
+
 </head>
 
 <body class="phone-version media-display-all">
@@ -3963,7 +4105,7 @@
         </div>
 
         <div class="poster-strip" aria-label="Featured media selector">
-          <button class="poster-card media-trigger" type="button" data-media="music">
+          <button class="poster-card media-trigger active" type="button" data-media="music">
             <div class="poster-thumb" style="background-image: url(&quot;https://lauragoodstone.com/w_32.webp&quot;) !important; background-position: 50% center !important;"></div>
             <div class="poster-meta">
               <span class="poster-type">Selected Songs</span>
@@ -3979,7 +4121,7 @@
             </div>
           </button>
 
-          <button class="poster-card media-trigger active" type="button" data-media="interviews">
+          <button class="poster-card media-trigger" type="button" data-media="interviews">
             <div class="poster-thumb" style="background-image: url(&quot;https://lauragoodstone.com/w_06.webp&quot;) !important; background-position: 50% center !important;"></div>
             <div class="poster-meta">
               <span class="poster-type">Press Features</span>
@@ -4218,7 +4360,7 @@
            HOME / MEDIA GALLERY
            Opened by the three hero cards.
       ================================================== -->
-      <section class="media-gallery-section" id="mediaGallery" aria-live="polite" style="--text-offset-y: 0px; --section-extra-space: 0px;">
+      <section class="media-gallery-section media-mode-music" id="mediaGallery" aria-live="polite" style="--texture-image: url(&quot;https://lauragoodstone.com/w_37.webp&quot;) !important; --texture-position: 50% center !important; --text-offset-y: 0px; --section-extra-space: 0px;">
         <div class="media-gallery-inner">
           <div class="media-gallery-header">
             <div>
@@ -4230,10 +4372,42 @@
           </div>
 
           <div class="media-room-layout">
-            <div class="media-list" id="mediaList"></div>
+            <div class="media-list" id="mediaList"><button class="media-item active" type="button" data-index="0">
+        <span class="media-item-thumb">
+          <img src="https://lauragoodstone.com/p_12.webp" alt="She’s Country" loading="lazy">
+        </span>
+        <span>
+          <span class="media-item-kicker">Featured Track</span>
+          <strong class="media-item-title">She’s Country</strong>
+          <span class="media-item-note">Official Spotify track</span>
+        </span>
+      </button><button class="media-item" type="button" data-index="1">
+        <span class="media-item-thumb">
+          <img src="https://lauragoodstone.com/p_39.webp" alt="She’s Country" loading="lazy">
+        </span>
+        <span>
+          <span class="media-item-kicker">Selected Song</span>
+          <strong class="media-item-title">She’s Country</strong>
+          <span class="media-item-note">Alternate listening card</span>
+        </span>
+      </button><button class="media-item" type="button" data-index="2">
+        <span class="media-item-thumb">
+          <img src="https://lauragoodstone.com/p_22.webp" alt="She’s Country" loading="lazy">
+        </span>
+        <span>
+          <span class="media-item-kicker">Laura Goodstone</span>
+          <strong class="media-item-title">She’s Country</strong>
+          <span class="media-item-note">Stream inside the site</span>
+        </span>
+      </button></div>
 
             <div class="media-player-panel" id="mediaPlayerPanel">
-              <div class="media-player-frame" id="mediaPlayerFrame"></div>
+              <div class="media-player-frame active" id="mediaPlayerFrame">
+          <div class="spotify-embed">
+            <iframe src="https://open.spotify.com/embed/track/1YSlDO1A5xo0ZmNik3aaNp?utm_source=generator" width="100%" height="352" allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+            </iframe>
+          </div>
+        </div>
             </div>
           </div>
         </div>
