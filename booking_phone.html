@@ -954,6 +954,350 @@
   --pos-cta: center center;
 }
 
+
+/* ==================================================
+   PHONE-FIRST BOOKING OVERRIDE
+   Keeps the embedded structure intact.
+   This section intentionally adapts the page for phone.
+================================================== */
+@media (max-width: 9999px) {
+  #booking.page-section.lg-ecosystem-embed-page,
+  #booking #live-shows.lg-shows-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    background: #050505 !important;
+  }
+
+  #booking #live-shows.lg-shows-page {
+    --shows-radius: 22px;
+    --shows-grid-opacity: 0.12;
+    --shows-hero-panel-visible: 0;
+    --shows-hero-panel-border-visible: 0;
+    --shows-hero-panel-blur-visible: 0;
+    --shows-hero-overlay-left-opacity: 0.08;
+    --shows-hero-overlay-mid-opacity: 0.30;
+    --shows-hero-overlay-right-opacity: 0.62;
+    --shows-hero-bottom-opacity: 0.92;
+    --shows-card-bg-opacity: 0.82;
+    --shows-card-glow-opacity: 0.12;
+  }
+
+  #booking #live-shows .lg-shows-hero,
+  #booking #live-shows .lg-shows-intro,
+  #booking #live-shows .lg-shows-catalog,
+  #booking #live-shows .lg-production,
+  #booking #live-shows .lg-final-cta {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  #booking #live-shows .lg-shows-hero {
+    min-height: calc(100svh - var(--menu-height, 72px)) !important;
+    padding: calc(var(--menu-height, 72px) + 22px) 16px 34px !important;
+    align-items: flex-end !important;
+    background-size: cover !important;
+    background-position: var(--pos-hero, center center) !important;
+  }
+
+  #booking #live-shows .lg-shows-hero::before {
+    background:
+      linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.72) 34%, rgba(0,0,0,0.18) 68%, rgba(0,0,0,0.12) 100%),
+      radial-gradient(circle at top left, rgba(var(--shows-accent-rgb), 0.12), transparent 42%) !important;
+  }
+
+  #booking #live-shows .lg-shows-hero-inner,
+  #booking #live-shows .lg-final-cta-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    overflow: visible !important;
+  }
+
+  #booking #live-shows .lg-shows-hero-inner::before,
+  #booking #live-shows .lg-final-cta-inner::before {
+    display: none !important;
+  }
+
+  #booking #live-shows .lg-shows-eyebrow {
+    display: flex !important;
+    width: 100% !important;
+    gap: 9px !important;
+    margin: 0 0 12px !important;
+    font-size: 0.62rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.13em !important;
+  }
+
+  #booking #live-shows .lg-shows-eyebrow::before {
+    width: 28px !important;
+    flex: 0 0 28px !important;
+  }
+
+  #booking #live-shows .lg-shows-script {
+    margin: 0 0 10px !important;
+    font-size: clamp(1.35rem, 8vw, 2rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  #booking #live-shows .lg-shows-hero h1,
+  #booking #live-shows .lg-shows-intro h2,
+  #booking #live-shows .lg-shows-section-title h2,
+  #booking #live-shows .lg-production-header h2,
+  #booking #live-shows .lg-final-cta h2 {
+    max-width: 100% !important;
+    font-size: clamp(2.45rem, 13.8vw, 4.15rem) !important;
+    line-height: 0.86 !important;
+    letter-spacing: 0.01em !important;
+    text-wrap: balance;
+  }
+
+  #booking #live-shows .lg-shows-hero h1 {
+    margin: 0 0 14px !important;
+  }
+
+  #booking #live-shows .lg-shows-hero-lead,
+  #booking #live-shows .lg-shows-intro p,
+  #booking #live-shows .lg-shows-section-title p,
+  #booking #live-shows .lg-production-header p,
+  #booking #live-shows .lg-final-cta p {
+    max-width: 100% !important;
+    font-size: 1.08rem !important;
+    line-height: 1.48 !important;
+  }
+
+  #booking #live-shows .lg-shows-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin-top: 22px !important;
+  }
+
+  #booking #live-shows .lg-shows-btn,
+  #booking #live-shows .lg-show-card .lg-shows-btn,
+  #booking #live-shows .lg-final-cta .lg-shows-btn {
+    width: 100% !important;
+    min-height: 48px !important;
+    padding: 0 18px !important;
+    margin-top: 0 !important;
+    border-radius: 999px !important;
+    font-size: 0.68rem !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.11em !important;
+    text-align: center !important;
+  }
+
+  #booking #live-shows .lg-shows-btn:hover {
+    transform: none !important;
+  }
+
+  #booking #live-shows .lg-shows-intro,
+  #booking #live-shows .lg-shows-catalog,
+  #booking #live-shows .lg-production,
+  #booking #live-shows .lg-final-cta {
+    padding: 58px 16px !important;
+  }
+
+  #booking #live-shows .lg-shows-intro-inner,
+  #booking #live-shows .lg-production-inner,
+  #booking #live-shows .lg-shows-section-title,
+  #booking #live-shows .lg-production-header {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  #booking #live-shows .lg-shows-intro-inner,
+  #booking #live-shows .lg-production-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  #booking #live-shows .lg-shows-section-title {
+    margin-bottom: 28px !important;
+  }
+
+  #booking #live-shows .lg-shows-section-title p,
+  #booking #live-shows .lg-production-header p,
+  #booking #live-shows .lg-final-cta p {
+    margin-top: 16px !important;
+  }
+
+  #booking #live-shows .lg-show-card,
+  #booking #live-shows .lg-show-card:nth-of-type(even),
+  #booking #live-shows .lg-show-card-full {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 0 22px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+    box-shadow: 0 18px 48px rgba(0,0,0,0.38) !important;
+  }
+
+  #booking #live-shows .lg-show-card:nth-of-type(even) .lg-show-visual,
+  #booking #live-shows .lg-show-card:nth-of-type(even) .lg-show-content {
+    order: initial !important;
+  }
+
+  #booking #live-shows .lg-show-content {
+    order: 2 !important;
+    width: 100% !important;
+    padding: 24px 18px 20px !important;
+  }
+
+  #booking #live-shows .lg-show-visual {
+    order: 1 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: 68svh !important;
+    max-height: 760px !important;
+    background-size: cover !important;
+    background-position: var(--show-position, center center) !important;
+  }
+
+  #booking #live-shows .lg-show-visual::before {
+    background:
+      linear-gradient(to top, rgba(0,0,0,0.58), rgba(0,0,0,0.04) 54%, rgba(0,0,0,0.10)),
+      radial-gradient(circle at top right, rgba(var(--shows-accent-rgb), 0.10), transparent 36%) !important;
+  }
+
+  #booking #live-shows .lg-show-number {
+    margin-bottom: 12px !important;
+    font-size: 0.62rem !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  #booking #live-shows .lg-show-content h3 {
+    margin: 0 0 8px !important;
+    font-size: clamp(2rem, 11.4vw, 3.25rem) !important;
+    line-height: 0.9 !important;
+    text-wrap: balance;
+  }
+
+  #booking #live-shows .lg-show-subtitle {
+    margin: 0 0 16px !important;
+    font-size: clamp(1.38rem, 8vw, 2rem) !important;
+    line-height: 1.02 !important;
+  }
+
+  #booking #live-shows .lg-show-description {
+    max-width: 100% !important;
+    margin: 0 0 20px !important;
+    font-size: 1.06rem !important;
+    line-height: 1.52 !important;
+  }
+
+  #booking #live-shows .lg-show-meta {
+    gap: 10px !important;
+  }
+
+  #booking #live-shows .lg-show-meta-row {
+    padding: 13px 14px !important;
+    border-radius: 15px !important;
+    font-size: 0.98rem !important;
+    line-height: 1.44 !important;
+  }
+
+  #booking #live-shows .lg-show-meta-row strong {
+    display: block !important;
+    margin-bottom: 5px !important;
+    font-size: 0.62rem !important;
+    line-height: 1.25 !important;
+  }
+
+  #booking #live-shows .lg-show-card .lg-shows-btn {
+    margin-top: 20px !important;
+  }
+
+  #booking #live-shows .lg-production-header {
+    margin-bottom: 26px !important;
+  }
+
+  #booking #live-shows .lg-production-card {
+    min-height: 0 !important;
+    padding: 22px 18px !important;
+    border-radius: 22px !important;
+  }
+
+  #booking #live-shows .lg-production-card span {
+    margin-bottom: 12px !important;
+    font-size: 0.62rem !important;
+    line-height: 1.3 !important;
+  }
+
+  #booking #live-shows .lg-production-card h3 {
+    margin-bottom: 12px !important;
+    font-size: clamp(1.45rem, 8vw, 2.1rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  #booking #live-shows .lg-production-card p {
+    font-size: 1.03rem !important;
+    line-height: 1.48 !important;
+  }
+
+  #booking #live-shows .lg-final-cta {
+    min-height: calc(100svh - var(--menu-height, 72px)) !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    text-align: left !important;
+    background-size: cover !important;
+    background-position: var(--pos-cta, center center) !important;
+  }
+
+  #booking #live-shows .lg-final-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.96), rgba(0,0,0,0.55) 42%, rgba(0,0,0,0.14));
+    pointer-events: none;
+  }
+
+  #booking #live-shows .lg-final-cta-inner {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #booking #live-shows .lg-shows-hero,
+  #booking #live-shows .lg-shows-intro,
+  #booking #live-shows .lg-shows-catalog,
+  #booking #live-shows .lg-production,
+  #booking #live-shows .lg-final-cta {
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+  }
+
+  #booking #live-shows .lg-shows-hero h1,
+  #booking #live-shows .lg-shows-intro h2,
+  #booking #live-shows .lg-shows-section-title h2,
+  #booking #live-shows .lg-production-header h2,
+  #booking #live-shows .lg-final-cta h2 {
+    font-size: clamp(2.2rem, 13vw, 3.45rem) !important;
+  }
+
+  #booking #live-shows .lg-show-visual {
+    height: 64svh !important;
+  }
+}
+
 </style>
 
 <section id="booking" class="page-section lg-ecosystem-embed-page" data-embedded-page="live-shows">
