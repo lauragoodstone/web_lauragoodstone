@@ -321,6 +321,7 @@
       <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="w">Web 19:9</button>
       <button class="filter-btn" data-filter="p">Phone 4:4</button>
+      <button class="filter-btn" data-filter="v2">V2 Images</button>
       <button class="filter-btn" id="dimNonFavoritesBtn">Dim Non-Favorites</button>
     </div>
   </header>
@@ -399,6 +400,7 @@
     function getImageType(path) {
       const fileName = getFileName(path);
 
+      if (/^v2_(0[1-9]|[1-4][0-9]|5[0-3])\.webp$/i.test(fileName)) return "v2";
       if (fileName.startsWith("w")) return "w";
       if (fileName.startsWith("p")) return "p";
 
@@ -408,6 +410,7 @@
     function getFilterLabel(filter) {
       if (filter === "w") return "Web 19:9";
       if (filter === "p") return "Phone 4:4";
+      if (filter === "v2") return "V2 Images";
       return "All";
     }
 
@@ -455,11 +458,12 @@
       const total = allImages.length;
       const webCount = allImages.filter(item => getImageType(item.path) === "w").length;
       const phoneCount = allImages.filter(item => getImageType(item.path) === "p").length;
+      const v2Count = allImages.filter(item => getImageType(item.path) === "v2").length;
       const label = getFilterLabel(currentFilter);
       const favoriteCount = favorites.length;
       const dimStatus = dimNonFavorites ? "Dim: ON" : "Dim: OFF";
 
-      info.textContent = `${visibleCount} showing / ${total} total — Web: ${webCount} — Phone: ${phoneCount} — Favorites: ${favoriteCount} — Filter: ${label} — ${dimStatus} — click image or name to copy full URL`;
+      info.textContent = `${visibleCount} showing / ${total} total — Web: ${webCount} — Phone: ${phoneCount} — V2: ${v2Count} — Favorites: ${favoriteCount} — Filter: ${label} — ${dimStatus} — click image or name to copy full URL`;
     }
 
     function showToast(text) {
